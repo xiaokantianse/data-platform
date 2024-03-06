@@ -23,4 +23,7 @@ document.querySelector("#btn-register").addEventListener("click", async (e) => {
   const res = await axios.post("/register", data);
   // console.log(res);
   showToast(res.data.message);
+  setTimeout( ()=>{
+    location.href = './login.html'
+  },800)
 });
