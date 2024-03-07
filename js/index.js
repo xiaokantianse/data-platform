@@ -1,1 +1,5 @@
 checkToken()
+
+renderName()
+
+logout()
