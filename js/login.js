@@ -19,7 +19,7 @@ document.querySelector('#btn-login').addEventListener('click', async e=>{
 
   try {
     const res =  await axios.post('./login', data)
-    console.log(res);
+    // console.log(res);
     const obj = {}
     obj.username = res.data.data.username
     obj.token = res.data.data.token
@@ -33,8 +33,5 @@ document.querySelector('#btn-login').addEventListener('click', async e=>{
     console.dir(error)
     return showToast(error.response.data.message)
   }
-
-
-
 })
 
