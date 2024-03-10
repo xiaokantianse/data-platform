@@ -24,7 +24,7 @@ const getData = async () => {
   // const data = localStorage.getItem('userMsg') ? JSON.parse(localStorage.getItem('userMsg')):{}
   // const { token } = data
   // token 过期或被篡改 处理
-  try {
+  
     // await 不能处理错误
     const res = await axios({
        url: "/dashboard",
@@ -36,16 +36,16 @@ const getData = async () => {
     //  console.log(res);
      renderOverview(res.data.overview)
    
-  } catch (error) {
-    // console.dir(error);
-    // if(error.response.status === 401){
-    //   showToast('登录失效 请重新登录')
-    //   localStorage.removeItem('userMsg')
-    //   setTimeout(()=>{
-    //     location.href = './login.html'
-    //   },1500)
-    // }
-  }
+  // } catch (error) {
+  //   // console.dir(error);
+  //   // if(error.response.status === 401){
+  //   //   showToast('登录失效 请重新登录')
+  //   //   localStorage.removeItem('userMsg')
+  //   //   setTimeout(()=>{
+  //   //     location.href = './login.html'
+  //   //   },1500)
+  //   // }
+  // }
  
 }
 
