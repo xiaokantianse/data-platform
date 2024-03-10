@@ -34,7 +34,7 @@ const getData = async () => {
       //  }
      })
     //  console.log(res);
-     renderOverview(res.data.data.overview)
+     renderOverview(res.data.overview)
    
   } catch (error) {
     // console.dir(error);
