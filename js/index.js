@@ -34,9 +34,12 @@ const getData = async () => {
       //  }
      })
     //  console.log(res);
-    const {overview,year} = res.data
+    const {overview,year,salaryData,groupData} = res.data
      renderOverview(overview)
      renderYear(year)
+     renderSalary(salaryData)
+     renderGroupData(groupData)
+     renderGenderData(salaryData)
 
    
   // } catch (error) {
@@ -152,4 +155,230 @@ const option = {
  myChart.setOption(option);
 }
 
-// 初始化echart实例
+// 薪资分布渲染
+const renderSalary = (salaryData)=>{
+  // console.log(salaryData);
+  const  myChart = echarts.init(document.querySelector('#salary'))
+  const option = {
+    tooltip: {
+      trigger: 'item'
+    },
+    title:{
+      text:'班级薪资分布',
+      top:10,
+      left:10,
+      textStyle:{
+        fontSize:18,
+      }
+    },
+    legend: {
+      bottom:0,
+      left: 'center'
+    },
+    series: [
+      {
+        name: '班级薪资分布',
+        type: 'pie',
+        radius: ['60%', '80%'],
+        // avoidLabelOverlap: false,
+        itemStyle: {
+          borderRadius: 20,
+          borderColor: '#fff',
+          borderWidth: 2
+        },
+        label: {
+          show: false,
+          // position: 'center'
+        },
+        // emphasis: {
+        //   label: {
+        //     show: true,
+        //     fontSize: 40,
+        //     fontWeight: 'bold'
+        //   }
+        // },
+        labelLine: {
+          show: false
+        },
+        data: salaryData.map(ele =>{
+          return {
+            value:ele.g_count+ele.b_count,
+            name:ele.label,
+          }
+        })
+      }
+    ]
+  }
+  myChart.setOption(option)
+}
+
+
+//渲染分组数据
+const renderGroupData = (groupData)=>{
+  // console.log(groupData);
+  const  myChart = echarts.init(document.querySelector('#lines'))
+  const option = {
+    grid:{
+      left: 70,
+      top: 30,
+      right: 30,
+      bottom: 50,
+    },
+    tooltip:{},
+    xAxis: {
+      type: 'category',
+      axisLine:{
+        lineStyle:{
+          type:'dashed',
+          color:'#ccc'
+        }
+      },
+      axisLabel:{
+        color:'#999'
+      },
+      data: groupData[1].map(ele =>ele.name)
+    },
+    yAxis: {
+      type: 'value',
+      splitLine:{
+        lineStyle:{
+          type:'dashed'
+        }
+      }
+    },
+    series: [
+      {
+        data: groupData[1].map(ele => ele.hope_salary),
+        type: 'bar',
+        itemStyle:{
+          color:{
+            type: 'linear',
+          x: 0,
+          y: 0,
+          x2: 0,
+          y2: 1,
+          colorStops: [{
+              offset: 0, color: '#34D39A' // 0% 处的颜色
+          }, {
+              offset: 1, color: 'rgba(52,211,154,0.2)' // 100% 处的颜色
+          }],
+          global: false
+          }
+        }
+      },
+      {
+        data: groupData[1].map(ele => ele.salary),
+        type: 'bar',
+        itemStyle:{
+          color:{
+            type: 'linear',
+          x: 0,
+          y: 0,
+          x2: 0,
+          y2: 1,
+          colorStops: [{
+              offset: 0, color: '#499FEE' // 0% 处的颜色
+          }, {
+              offset: 1, color: 'rgba(73,159,238,0.2)' // 100% 处的颜色
+          }],
+          global: false
+          }
+        }
+      }
+    ],
+    
+  }
+
+  myChart.setOption(option)
+
+  // 数据切换 要写在rendergroupdata里面 要不然无法获得option
+  // 事件委托  排他思想
+  document.querySelector('#btns').addEventListener('click', e=>{
+    if(e.target.tagName === 'BUTTON'){
+      // console.log(1);
+
+      document.querySelector('.btn-blue').classList.remove('btn-blue')
+      e.target.classList.add('btn-blue')
+      const groupNum = e.target.innerHTML
+      // console.log(groupNum);
+      option.xAxis.data = groupData[groupNum].map(ele => ele.name)
+      
+      option.series[0].data = groupData[groupNum].map(ele => ele.hope_salary)
+      option.series[1].data = groupData[groupNum].map(ele => ele.salary)
+      
+
+
+      myChart.setOption(option)
+
+
+    }
+  })
+}
+
+// 男女薪资分布
+const renderGenderData = (salaryData) =>{
+  console.log(salaryData);
+  const myChart = echarts.init(document.querySelector('#gender'))
+
+
+  const option = {
+    title:[
+      {
+        text:'男女薪资分布',
+        top:10,
+        left:5,
+        textStyle:{
+          fontSize:16
+        }
+      },
+      {
+        text:'男生',
+        top:'45%',
+        left:'45%',
+        textStyle:{
+          fontSize:12
+        }
+      }, {
+        text:'女生',
+        top:'85%',
+        left:'45%',
+        textStyle:{
+          fontSize:12
+        }
+      },
+    ],
+    tooltip:{},
+    series: [
+      {
+        name: '男生',
+        type: 'pie',
+        radius: ['20%', '30%'],
+        center: ['50%', '30%'],
+        // itemStyle: {
+        //   borderRadius: 8
+        // },
+        data: salaryData.map(ele => (
+         { value:ele.b_count,
+          name:ele.label,
+        }
+        ))
+      }, 
+      {
+        name: '女生',
+        type: 'pie',
+        radius: ['20%', '30%'],
+        center: ['50%', '70%'],
+        // roseType: 'area',
+        // itemStyle: {
+        //   borderRadius: 8
+        // },
+        data: salaryData.map(ele => ({ value:ele.g_count,name:ele.label})),
+       },
+
+    ]
+    
+  }
+
+  myChart.setOption(option)
+
+}
