@@ -27,6 +27,7 @@ logout()
     `
   }).join('')
  }
+
  render()
 
  // 初始化模态框
@@ -75,11 +76,33 @@ const selectLocation = async ()=>{
       return `<option value="${item}">${item}</option>`
     }).join('')
   })
-
-
-  
-
-
-
 }
 selectLocation()
+
+// 新增学生业务逻辑
+document.querySelector('#submit').addEventListener('click', e=>{
+  addStudent()
+})
+const formDom = document.querySelector('#form')
+
+const addStudent = async e=>{
+  const data = serialize(formDom, {hash:true, empty:true})
+  data.age = +data.age
+  data.gender = +data.gender
+  data.salary = +data.salary
+  data.hope_salary = +data.hope_salary
+  data.group = +data.group
+
+  try{
+    const {message} = await axios.post('/students',data)
+    showToast(message)
+    myModal.hide()
+    formDom.reset()
+    render()
+  }
+catch(err){
+  myModal.hide()
+  showToast('输入有误，重新填写')
+  formDom.reset()
+}
+}
