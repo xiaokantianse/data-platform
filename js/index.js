@@ -318,7 +318,7 @@ const renderGroupData = (groupData)=>{
 
 // 男女薪资分布
 const renderGenderData = (salaryData) =>{
-  console.log(salaryData);
+  // console.log(salaryData);
   const myChart = echarts.init(document.querySelector('#gender'))
 
 
