@@ -79,6 +79,7 @@ const selectLocation = async ()=>{
 }
 selectLocation()
 
+const formDom = document.querySelector('#form')
 // 新增学生业务逻辑 && 编辑学生业务
 document.querySelector('#submit').addEventListener('click', e=>{
   const txt = document.querySelector('.modal-title').innerHTML
@@ -94,7 +95,7 @@ document.querySelector('#submit').addEventListener('click', e=>{
   
 
 })
-const formDom = document.querySelector('#form')
+
 
 const addStudent = async e=>{
   const data = serialize(formDom, {hash:true, empty:true})
@@ -164,6 +165,7 @@ const genders =  document.querySelectorAll('[name=gender]')
 // console.log(genders);
 genders[res.data.gender].checked = true
 const {province,city,area} = res.data
+
 provinceDom.value = province
 const {list:cList} = await axios.get('/api/city',{
   params:{
@@ -172,7 +174,7 @@ const {list:cList} = await axios.get('/api/city',{
 })
 cityDom.innerHTML +=  cList.map( item=>{
   return `<option value=${item}>${item}</option>`
-})
+}).join('')
 cityDom.value = city
 
 const {list:aList} = await axios.get('/api/area', {
@@ -184,7 +186,7 @@ const {list:aList} = await axios.get('/api/area', {
 // console.log(aList);
 areaDom.innerHTML += aList.map(item => {
   return `<option value=${item}>${item}</option>`
-})
+}).join('')
 areaDom.value = area
 }
 
