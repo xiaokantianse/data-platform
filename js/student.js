@@ -5,7 +5,12 @@ logout()
 
  // 抽取函数 渲染页面
 
+
  const render = async() =>{
+  const result = await axios.get('/dashboard')
+  // console.log(result);
+  const {overview:{student_count}} = result.data
+  document.querySelector('.total').innerHTML = student_count
   const res = await axios.get('/students')
   const {data} = res
  document.querySelector('.list').innerHTML =  data.map(item =>{

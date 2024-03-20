@@ -69,6 +69,7 @@ const renderOverview = (overview) =>{
     document.querySelector(`.${ele}`).innerHTML = overview[ele]
   })
 
+
 }
 
 // 渲染薪资走势数据
